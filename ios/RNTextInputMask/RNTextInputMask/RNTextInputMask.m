@@ -38,6 +38,16 @@ RCT_EXPORT_METHOD(unmask:(NSString *)maskString inputValue:(NSString *)inputValu
     onResult(@[output]);
 }
 
+RCT_EXPORT_METHOD(setText:(nonnull NSNumber *)reactNode text:(NSString *)text){
+    [self.bridge.uiManager addUIBlock:^(RCTUIManager *uiManager, NSDictionary<NSNumber *, RCTTextField *> *viewRegistry ) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            RCTTextField *view = viewRegistry[reactNode];
+            RCTUITextField *textView = [view backedTextInputView];
+            textView.text = text;
+        });
+    }];
+}
+
 RCT_EXPORT_METHOD(setMask:(nonnull NSNumber *)reactNode mask:(NSString *)mask) {
     [self.bridge.uiManager addUIBlock:^(RCTUIManager *uiManager, NSDictionary<NSNumber *, RCTTextField *> *viewRegistry ) {
         dispatch_async(dispatch_get_main_queue(), ^{
